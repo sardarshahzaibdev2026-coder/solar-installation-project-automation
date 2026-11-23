@@ -1,0 +1,358 @@
+{
+  "name": "Solar Installation Project Tracking & Customer Notification",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Solar Installation Project Registration",
+        "formDescription": "Register a new solar installation project and track its progress",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Customer Name"
+            },
+            {
+              "fieldLabel": "Customer Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Phone Number"
+            },
+            {
+              "fieldLabel": "Installation Address"
+            },
+            {
+              "fieldLabel": "Solar System Size (kW)",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Assigned Team"
+            },
+            {
+              "fieldLabel": "Notes"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "57666762-aba6-484b-acbd-483edf6d69ad",
+      "name": "On form submission",
+      "webhookId": "21742d63-aee6-424d-95bd-28a3f7858762"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f70fea78-ee7b-4309-a376-4f210f4e6c63",
+              "name": "Project ID",
+              "value": "={{ 'SOL-' + Date.now() }}",
+              "type": "string"
+            },
+            {
+              "id": "b43b2f5c-ad3c-4f89-9aea-042b2ee6a232",
+              "name": "Project Status",
+              "value": "Site Survey",
+              "type": "string"
+            },
+            {
+              "id": "9aebc545-84cc-41b0-98e4-f16122377ed6",
+              "name": "Start Date",
+              "value": "={{ $now.toFormat('yyyy-MM-dd') }}",
+              "type": "string"
+            },
+            {
+              "id": "fff031e0-4fc7-4137-92e7-9bddfce65cac",
+              "name": "Updated Date",
+              "value": "={{ $now.toFormat('yyyy-MM-dd') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "e89d3148-5763-4eea-bdab-48299e14ab71",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appKH5jftLSepmsRN",
+          "mode": "list",
+          "cachedResultName": "Solar Installation Project Tracker",
+          "cachedResultUrl": "https://airtable.com/appKH5jftLSepmsRN"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblGkeSYZrtFvuk2J",
+          "mode": "list",
+          "cachedResultName": "Solar Projects",
+          "cachedResultUrl": "https://airtable.com/appKH5jftLSepmsRN/tblGkeSYZrtFvuk2J"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer Name": "={{ $('On form submission').item.json['Customer Name'] }}",
+            "Customer Email": "={{ $('On form submission').item.json['Customer Email'] }}",
+            "Phone Number": "={{ $('On form submission').item.json['Phone Number'] }}",
+            "Assigned Team": "={{ $('On form submission').item.json['Assigned Team'] }}",
+            "Notes": "={{ $('On form submission').item.json.Notes }}",
+            "Project ID": "={{ $json['Project ID'] }}",
+            "System Size": "={{ $('On form submission').item.json['Solar System Size (kW)'] }}",
+            "Project Status": "={{ $json['Project Status'] }}",
+            "Installation Address": "={{ $('On form submission').item.json['Installation Address'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Project ID",
+              "displayName": "Project ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Customer Email",
+              "displayName": "Customer Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "System Size",
+              "displayName": "System Size",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Project Status",
+              "displayName": "Project Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Site Survey",
+                  "value": "Site Survey"
+                },
+                {
+                  "name": "Approved",
+                  "value": "Approved"
+                },
+                {
+                  "name": "Installation",
+                  "value": "Installation"
+                },
+                {
+                  "name": "Inspection",
+                  "value": "Inspection"
+                },
+                {
+                  "name": "Completed",
+                  "value": "Completed"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Assigned Team",
+              "displayName": "Assigned Team",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Start Date",
+              "displayName": "Start Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Updated Date",
+              "displayName": "Updated Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Installation Address",
+              "displayName": "Installation Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "4135df68-44f2-4320-8757-eeb80cfa8fc7",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "QDQVPlBiF6Uadp16",
+          "name": "Airtable Personal Access Token account 6"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.fields['Customer Email'] }}",
+        "subject": "Solar Installation Project Registered – Confirmation",
+        "message": "=Hello,\n\nThank you for registering your solar installation project with us.\n\nYour project has been successfully registered.\n\nProject ID: {{ $json.fields[\"Project ID\"] }}\nSystem Size: {{ $json.fields[\"System Size\"] }} kW\nProject Status: {{ $json.fields[\"Project Status\"] }}\n\nOur team will keep you updated about your project's progress.\n\nThank you,\nSolar Installation Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "957acb78-e3d5-49a6-825e-8c1dc7949d43",
+      "name": "Send a message",
+      "webhookId": "40307fad-b414-4ddd-8d97-5561738bb1a9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "VA0IJbApuwkx4dfR",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a88c18e6-f212-4878-b22c-72dc1e350538",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6e09abedfd28e85ac261ad9898070b7bd18a6bacefa80cf22df0369b64fe23b9"
+  },
+  "nodeGroups": [],
+  "id": "qR2ffMBMc7kxhPnL",
+  "tags": []
+}
